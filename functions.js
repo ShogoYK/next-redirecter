@@ -73,19 +73,19 @@ export function counter(filePath = "./test_results.json") {
 export function writeRedirecter(sourceData = './test_results.json', outputPath = './new_settings.js') {
   const data = JSON.parse(readFileSync(sourceData, "utf8"))
   const newConfig = []
-  //TODO: Don't use regex, use url.parse()
-  const urlRegex = /(?<=https:\/\/klinic.com\/)(.+)/
-
+  
   try {
-
+    
     for (const item of data) {
       if (item["Status"] == "Failed") {
-        let sourceUrl = item["404 Page URL"].match(urlRegex)
-        let destinationUrl = item["Redirect URL"].match(urlRegex)
-
+        let sourceUrl = URL.parse(item["404 Page URL"])
+        let destinationUrl = URL.parse(item["Redirect URL"])
+        console.log(sourceUrl);
+        console.log(destinationUrl);
+        
         newConfig.push({
-          source: sourceUrl ? "/" + sourceUrl[0] : null,
-          destination: destinationUrl ? "/" + destinationUrl[0] : "/",
+          source: sourceUrl ? sourceUrl.pathname : null,
+          destination: destinationUrl ? destinationUrl.pathname : null,
           pemanent: true
         })
       }
