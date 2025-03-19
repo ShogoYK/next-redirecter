@@ -12,7 +12,7 @@ export function convertXlsxToJson(fileName, outputName = "output.json") {
 
   const jsonData = xlsx.utils.sheet_to_json(worksheet);
 
-  fs.writeFileSync(outputName, JSON.stringify(jsonData, null, 2));
+  fs.writeFileSync(outputName, JSON.stringify(jsonData, null, 2), {encoding:'utf8',flag:'w'});
 
   console.log("✅ Convertion success! JSON file saved as: " + outputName);
 }
@@ -48,7 +48,7 @@ export async function testUrls(inputFilePath = "./output.json", outputFilePath =
       }
     }
 
-    fs.writeFileSync(outputFilePath, JSON.stringify(results, null, 2));
+    fs.writeFileSync(outputFilePath, JSON.stringify(results, null, 2), {encoding:'utf8',flag:'w'});
     console.log('✅ Testing success! Report saved as:', outputFilePath);
   } catch (error) {
     console.error('🚨🚧 Testing ERROR:', error.message);
@@ -80,20 +80,18 @@ export function writeRedirecter(sourceData = './test_results.json', outputPath =
       if (item["Status"] == "Failed") {
         let sourceUrl = URL.parse(item["404 Page URL"])
         let destinationUrl = URL.parse(item["Redirect URL"])
-        console.log(sourceUrl);
-        console.log(destinationUrl);
         
         newConfig.push({
           source: sourceUrl ? sourceUrl.pathname : null,
           destination: destinationUrl ? destinationUrl.pathname : null,
-          pemanent: true
+          permanent: true
         })
       }
     }
 
     const jsContent = `${JSON.stringify(newConfig, null, 2).replace(/"(\w+)":/g, '$1:')};`;
 
-    fs.writeFileSync(outputPath, jsContent)
+    fs.writeFileSync(outputPath, jsContent, {encoding:'utf8',flag:'w'})
     console.log('New settings saved in ' + outputPath);
   } catch (error) {
 
