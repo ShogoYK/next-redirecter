@@ -2,9 +2,7 @@ import { convertXlsxToJson, counter, testUrls, writeRedirecter } from './functio
 import fs from 'fs';
 
 async function main() {
-  if (!fs.existsSync("./output.json")) {
-    convertXlsxToJson("./planilha.xlsx")
-  }
+  convertXlsxToJson("./planilha.xlsx")
 
   await testUrls()
 
@@ -12,7 +10,7 @@ async function main() {
   console.log(`Results: \n✅ ${successCounter} are being redirected \n❌ ${failedCounter} are NOT being redirected`);
   const newSettings = "./test_results.json"
   writeRedirecter(newSettings)
-  
+
   console.log(`✅ New NextJS redirect settings were saved in ${newSettings} `);
 
 }
